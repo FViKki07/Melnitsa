@@ -17,6 +17,14 @@ int main() {
 
 	FirstPlayer();
 
-	//PutChip(arr, 12, 1);
-	//print_pos(arr);
+	PutChip(arr, "a2", 1);
+	print_pos(arr);
+
+	int arr2[24] = {1,1,1,2,2,1,0,2,0,2,2,1,0,1,0,0,2,0,1,2,0,0,0,0};
+	print_pos(arr2);
+	Node* node = new Node(arr2, 5, 6, 2,0,0);
+	stack<int> st;
+	int p = -1;
+	cout << FindMill(arr2, 1, st, p)<<endl;
+	cout<< AbilityMove(node);
 }
