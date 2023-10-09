@@ -17,12 +17,14 @@ struct Node {
 	int white;
 	int black;
 	int move;// 1 - Ходят белые, 2 - черные bool?
-	int g;
-	int h;
+	int fase;//фаза игры
+	int fun;//эвристика
 
-	Node(int* s, int w, int b, int m, int h, int g = 0) : state(s), white(w), black(b), move(m) {
+
+	Node(int* s, int w, int b, int m,int fa, int f) : state(s), white(w), black(b), move(m) {
 		value = 0;
-		h = 0;
+		fase = fa;
+		fun = f;
 	}
 };
 
@@ -45,7 +47,12 @@ void print_pos(int* mas);
 
 void FirstPlayer();
 
-void PutChip(int* box,string pos, int chip);
+void PutChip(int* box,string pos, int color);
 
-bool AbilityMove(Node* node);
-bool FindMill(int* state, int color, stack<int>& pos, int& prev);
+bool AbilityMove(int* state, int color, vector<int>& blockChip);
+
+bool FindMill(int* state, int color, vector<vector<int>>& pos );
+
+int FindTwoChip(int* state, int color);
+
+void StartGame();

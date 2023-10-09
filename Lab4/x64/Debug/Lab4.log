@@ -1,2 +1,7 @@
-﻿  main.cpp
+﻿  Game.cpp
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(9,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(42,11): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(109,54): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(114,38): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(117,33): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
   Lab4.vcxproj -> D:\Вика\Универ\4\ИС\Melnitsa\x64\Debug\Lab4.exe
