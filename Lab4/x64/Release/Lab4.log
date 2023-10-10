@@ -1,0 +1,18 @@
+﻿  Game.cpp
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(36,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(82,11): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(150,21): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(155,22): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(158,33): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(244,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(266,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(271,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(330,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(352,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(357,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+  Создание кода
+  1 of 483 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  Lab4.vcxproj -> D:\Вика\4 course\ИС\Melnitsa\x64\Release\Lab4.exe

@@ -11,22 +11,8 @@
 
 using namespace std;
 
-struct Node {
-	int* state;
-	int value;
-	int white;
-	int black;
-	int move;// 1 - Ходят белые, 2 - черные bool?
-	int fase;//фаза игры
-	int fun;//эвристика
 
-
-	Node(int* s, int w, int b, int m,int fa, int f) : state(s), white(w), black(b), move(m) {
-		value = 0;
-		fase = fa;
-		fun = f;
-	}
-};
+bool FindMill(int* state, int color, vector<vector<int>>& pos);
 
 
 const map<string, int> CONVERT = { {"a7", 0},{"d7", 1}, {"g7", 2}, {"b6", 3}, {"d6", 4}, {"f6", 5},
@@ -43,11 +29,13 @@ const map<int, vector<int>> NEIGHBORS = { {0, { 1,9}}, {1, {0,2, 4}}, {2, {1, 14
 const int MILLS[16][3] = {{0,1,2}, {3,4,5}, {6,7,8}, {9,10,11}, {12,13,14}, {15,16,17}, {18,19,20}, {21,22,23},
 	{0,9,21}, {3,10,18}, {6,11,15}, {1,4,7},{16,19,22}, {8,12,17},{5,13,20},{2,14,23} };
 
+const int MAX_DEPTH = 2;
+
 void print_pos(int* mas);
 
 void FirstPlayer();
 
-void PutChip(int* box,string pos, int color);
+bool PutChip(int* box,string pos, int color);
 
 bool AbilityMove(int* state, int color, vector<int>& blockChip);
 
