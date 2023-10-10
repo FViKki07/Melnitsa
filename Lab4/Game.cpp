@@ -1,37 +1,7 @@
 #include "Lab4.h"
 using namespace std;
 
-int ROBOTCLR = 0;
-int HUMANCLR = 0;
-vector<vector<int>> rMills = { };
-vector<vector<int>> oppMills = {};
-
-struct Node {
-	int* state;
-	int value;
-	int white;
-	int black;
-	int move;// 1 - Ходят белые, 2 - черные bool?
-	int phase;//фаза игры
-	int fun;//эвристика
-	Node* prevNode;
-
-	Node(int* s, int w, int b, int m, int p, int f, Node* n = nullptr) : state(s), white(w), black(b), move(m), prevNode(n) {
-		value = 0;
-		phase = p;
-		fun = f;
-
-		vector<vector<int>> v = {};
-		if (FindMill(state, move, v)) {
-			for (int i = 0; i < v.size(); i++) {
-				if (move == HUMANCLR)
-					oppMills.push_back(v[i]);
-				else rMills.push_back(v[i]);
-			}
-		}
-	}
-};
-
+/*
 void FirstPlayer() {
 	srand(time(NULL));
 	setlocale(LC_ALL, "Russian");
@@ -47,27 +17,37 @@ void FirstPlayer() {
 		ROBOTCLR = 1;
 		cout << "Вы ходите вторыми. Ваши фишки черные (2)\nЧтобы походить выберите позицию от 0 до 24 включительно." << endl;
 	}
-}
+}*/
 
-bool PutChip(int* box, string pos, int color) {
-	if (CONVERT.count(pos) == 0)
+bool PutChip(Node* node, string pos, int color) {
+	stringstream ss(pos);
+	string word;
+	vector<string> vv = {};
+	while (ss >> word) {
+		vv.push_back(word);
+	}
+	if(vv.size() == 0) return false;
+	if (CONVERT.count(vv[0]) == 0)
 		return false; 
-	box[CONVERT.at(pos)] = color;
+	node->new_state(CONVERT.at(vv[0]));
 	vector<vector<int>> v = {};
-	if (FindMill(box, color, v)) {
+	if (FindMill(node->get_state(), color, v) && BetweenMills(node, v)) {
 		for (int i = 0; i < v.size(); i++) {
-			if (color == HUMANCLR)
-				oppMills.push_back(v[i]);
-			else rMills.push_back(v[i]);
+			if (CONVERT.count(vv[i + 1]) == 0) return false;
+			int pos = CONVERT.at(vv[i + 1]);
+			node->new_state(pos, 0);
+			if (ROBOTCLR == 1) node->white--;
+			else node->black--;
 		}
+
 		return true;
 	}
-	return false;
+	return true;
 }
 
 bool End_of_Game(Node* node){
 	vector<int> b = {};
-	if (node->black < 3 || node->white < 3 || !AbilityMove(node->state, node->move, b))
+	if (node->black < 3 || node->white < 3 || !AbilityMove(node->get_state(), node->move, b))
 		return true;
 	return false;
 
@@ -132,29 +112,29 @@ bool FindMill(int* state,int color,vector<vector<int>>& pos) {
 
 
 int Heuristics1(Node* node) {
-	(node->move = 2) ? node->move = 1 : node->move = 2;
+	//(node->move == 2) ? node->move = 1 : node->move = 2;
 	//1
 	int clossedMorris = 0;
 	vector<vector<int>> v;
 	if (node->move == ROBOTCLR) {
-		if (FindMill(node->state, node->move, v))
+		if (FindMill(node->get_state(), node->move, v))
 			clossedMorris = 1;
 	}
 	else {
-		if (FindMill(node->state, node->move, v))
+		if (FindMill(node->get_state(), node->move, v))
 			clossedMorris = -1;
 
 	}
 
 	//2
-	int NumberOfMorris = rMills.size() - oppMills.size();
+	int NumberOfMorris = node->rMills.size() - node->oppMills.size();
 
 	//3
 	vector<int> blocked = {};
-	AbilityMove(node->state, HUMANCLR, blocked);
+	AbilityMove(node->get_state(), HUMANCLR, blocked);
 	int NumberofBlocked = blocked.size();
 	blocked.clear();
-	AbilityMove(node->state, ROBOTCLR, blocked);
+	AbilityMove(node->get_state(), ROBOTCLR, blocked);
 	NumberofBlocked -= blocked.size();
 
 	//4
@@ -164,8 +144,8 @@ int Heuristics1(Node* node) {
 	else NumberChip = node->black - node->white;
 
 	//5
-	int TwoChip = FindTwoChip(node->state, ROBOTCLR) ;
-	TwoChip -= FindTwoChip(node->state, HUMANCLR);// : TwoChip -= FindTwoChip(node->state, 1);
+	int TwoChip = FindTwoChip(node->get_state(), ROBOTCLR) ;
+	TwoChip -= FindTwoChip(node->get_state(), HUMANCLR);// : TwoChip -= FindTwoChip(node->state, 1);
 
 	//8
 	int WinConfiguration = 0;
@@ -175,7 +155,7 @@ int Heuristics1(Node* node) {
 		WinConfiguration = 1;
 
 
-	(node->move = 2) ? node->move = 1 : node->move = 2;
+	//(node->move == 2) ? node->move = 1 : node->move = 2;
 	return 18 * clossedMorris + 26 * NumberOfMorris + 1 * NumberofBlocked + 9 * NumberChip + 15 * TwoChip;
 	/*(node->move == 1) ? h += node->white : node->black;
 	vector<vector<int>> v;
@@ -187,17 +167,26 @@ int Heuristics1(Node* node) {
 }
 
 
-void BetweenMills(vector<vector<int>>& v) {
+bool BetweenMills(Node* node, vector<vector<int>>& v) {
+	int count = v.size();
+	vector<vector<int>> mills = {};
+	if (ROBOTCLR == node->move) mills = node->rMills;
+	else mills = node->oppMills;
 	for (int i = 0; i < v.size(); i++) {
-		for (int j = 0; j < rMills.size(); j++) {
-			if (v[i].size() != 0 && rMills[j].size() != 0) {
-				vector<int> rob = rMills[j];
-				if (v[i][0] == rob[0] && v[i][1] == rob[1] && v[i][2] == rob[3])
+		for (int j = 0; j < mills.size(); j++) {
+				vector<int> rob = mills[j];
+				if (v[i][0] == rob[0] && v[i][1] == rob[1] && v[i][2] == rob[2])
 					v.erase(v.begin() + i);
-				else rMills.push_back(v[i]);
-			}
+				else mills.push_back(v[i]);
+		}
+		if (mills.size() == 0) {
+			mills.push_back(v[i]);
 		}
 	}
+	if (ROBOTCLR == node->move)  node->rMills = mills;
+	else node->oppMills = mills;
+	if (count == v.size()) return true;
+	return false;
 }
 
 void pr(int* p) {
@@ -215,7 +204,7 @@ Node* LookNewPos(Node* node, int& depth) {
 	if (depth >= MAX_DEPTH || node->white == 9 || node->black == 9) {
 		return node;
 	}
-	int* state = node->state;
+	int* state = node->get_state();
 	int MAX = INT32_MIN;
 	int MIN = INT32_MAX;
 	if (node->move == ROBOTCLR) {
@@ -228,13 +217,12 @@ Node* LookNewPos(Node* node, int& depth) {
 				//cout << "  HEu " << node->fun << endl;
 				Node* new_node = nullptr;
 				if(ROBOTCLR == 2)
-					new_node = new Node(new_state, node->white, node->black + 1, HUMANCLR, 1, 0, node);
-				else new_node = new Node(new_state, node->white + 1, node->black, HUMANCLR, 1, 0, node);
+					new_node = new Node(new_state, node->white, node->black + 1, ROBOTCLR, 1, 0, node);
+				else new_node = new Node(new_state, node->white + 1, node->black, ROBOTCLR, 1, 0, node);
 
 
 				vector<vector<int>> v = { };
-				if (FindMill(new_state, ROBOTCLR, v)) {
-					BetweenMills(v);
+				if (FindMill(new_state, ROBOTCLR, v) && BetweenMills(new_node, v)) {
 					if (v.size() == 1) {
 						if (ROBOTCLR == 2)
 							new_node->white--;
@@ -243,33 +231,45 @@ Node* LookNewPos(Node* node, int& depth) {
 						while ((it = find(it, new_state + 24, HUMANCLR)) != (new_state + 24)) {
 							int pos = distance(new_state, it);
 							
-							new_state[pos] = 0;
+							int* new_state2 = new int[24];
+							copy(new_state, new_state + 24, new_state2);
+							new_state2[pos] = 0;
+							int s[24];
+							copy(new_state2, new_state2 + 24, s);
+							new_node->new_state(new_state2);
 							int f = Heuristics1(new_node);
 							new_node->fun = f;
 
 							depth += 1;
+							new_node->move = HUMANCLR;
 							Node* next = LookNewPos(new_node, depth);
-							++it;
 
 							if (next != nullptr && MAX < next->fun) {
 								MAX = next->fun;
 								max_node = next;
 							}
+							++it;
 						}
 					}
-					else {
+					else{
+			
 						if (ROBOTCLR == 2)
 							new_node->white-=2;
 						else new_node->black-=2;
 						auto it = new_state;
 						while ((it = find(it, new_state + 24, HUMANCLR)) != (new_state + 24)) {
 							int pos = distance(new_state, it);
+							int* new_state2 = new int[24];
+							copy(new_state, new_state + 24, new_state2);
+							new_state2[pos] = 0;
 
-							new_state[pos] = 0;
-							auto it2 = new_state + pos + 1;//может не надо + 1
-							while ((it2 = find(it2, new_state + 24, HUMANCLR)) != (new_state + 24)) {
-								pos = distance(new_state, it2);
-								new_state[pos] = 0;
+							auto it2 = new_state2 + pos + 1;//может не надо + 1
+							while ((it2 = find(it2, new_state2 + 24, HUMANCLR)) != (new_state2 + 24)) {
+								pos = distance(new_state2, it2);
+								int* new_state3 = new int[24];
+								copy(new_state2, new_state2 + 24, new_state3);
+								new_state3[pos] = 0;
+								new_node->new_state(new_state3);//то же у человека и тут для 2ух фишек
 								int f = Heuristics1(new_node);
 								new_node->fun = f;
 
@@ -310,17 +310,19 @@ Node* LookNewPos(Node* node, int& depth) {
 		for (int i = 0; i < 24; i++) {
 			if (state[i] == 0) {
 				int* new_state = new int[24];
+				int s[24];
+				
 				copy(state, state + 24, new_state);
+				copy(new_state, new_state + 24, s);
 				new_state[i] = node->move;
 				Node* new_node = nullptr;
 
 				if (HUMANCLR == 2)
-					new_node = new Node(new_state, node->white, node->black + 1, ROBOTCLR, 1, 0, node);
-				else new_node = new Node(new_state, node->white + 1, node->black, ROBOTCLR, 1, 0, node);
+					new_node = new Node(new_state, node->white, node->black + 1, HUMANCLR, 1, 0, node);
+				else new_node = new Node(new_state, node->white + 1, node->black, HUMANCLR, 1, 0, node);
 
 				vector<vector<int>> v = { };
-				if (FindMill(new_state, HUMANCLR, v)) {
-					BetweenMills(v);
+				if (FindMill(new_state, HUMANCLR, v) && BetweenMills(new_node, v)) {
 					if (v.size() == 1) {
 						if (HUMANCLR == 2)
 							new_node->white--;
@@ -329,11 +331,15 @@ Node* LookNewPos(Node* node, int& depth) {
 						while ((it = find(it, new_state + 24, ROBOTCLR)) != (new_state + 24)) {
 							int pos = distance(new_state, it);
 
-							new_state[pos] = 0;
+							int* new_state2 = new int[24];
+							copy(new_state, new_state + 24, new_state2);
+							new_state2[pos] = 0;
+							new_node->new_state(new_state2);
 							int f = Heuristics1(new_node);
 							new_node->fun = f;
 
 							depth += 1;
+							new_node->move = ROBOTCLR;
 							Node* next = LookNewPos(new_node, depth);
 							++it;
 
@@ -351,11 +357,18 @@ Node* LookNewPos(Node* node, int& depth) {
 						while ((it = find(it, new_state + 24, ROBOTCLR)) != (new_state + 24)) {
 							int pos = distance(new_state, it);
 
-							new_state[pos] = 0;
-							auto it2 = new_state + pos + 1;//может не надо + 1
-							while ((it2 = find(it2, new_state + 24, ROBOTCLR)) != (new_state + 24)) {
-								pos = distance(new_state, it2);
-								new_state[pos] = 0;
+							int* new_state2 = new int[24];
+							copy(new_state, new_state + 24, new_state2);
+							new_state2[pos] = 0;
+							new_node->new_state(new_state2);
+							auto it2 = new_state2 + pos + 1;//может не надо + 1
+							while ((it2 = find(it2, new_state2 + 24, ROBOTCLR)) != (new_state2 + 24)) {
+								pos = distance(new_state2, it2);
+								
+								int* new_state3 = new int[24];
+								copy(new_state2, new_state2 + 24, new_state3);
+								new_state3[pos] = 0;
+								new_node->new_state(new_state3);
 								int f = Heuristics1(new_node);
 								new_node->fun = f;
 
@@ -383,7 +396,7 @@ Node* LookNewPos(Node* node, int& depth) {
 					Node* next = LookNewPos(new_node, depth);
 
 					if (next != nullptr && MIN > next->fun) {
-						MAX = next->fun;
+						MIN = next->fun;
 						max_node = next;
 					}
 				}
@@ -404,28 +417,27 @@ void StartGame() {
 	//arr[1] = 2;
 	//arr[4] = 1;
 
-	Node* startNode = new Node(arr, 2, 1, 1, 1, 0);
+	Node* startNode = new Node(arr, 0, 0, 1, 1, 0);
 	
 	//FirstPlayer();
-	ROBOTCLR = 1;
-	HUMANCLR = 2;
-	print_pos(startNode->state);
+	//ROBOTCLR = 1;
+	//HUMANCLR = 2;
+	//print_pos(startNode->get_state());
 	for (int i = 0; i < 9; i++) {
 		if (HUMANCLR == 1 || i > 0) {
-			string inputstr;
 			std::cout << "Введите поля: ";
-			std::cin >> inputstr;
-			while (CONVERT.count(inputstr) == 0) {
+			char s[8];
+			cin.getline(s, 8);
+			while (!PutChip(startNode, s, HUMANCLR)) {
 				std::cout << "Неправильное значение. ";
 				std::cout << "Введите поля: ";
-				std::cin >> inputstr;
+				cin.getline(s, 8);
 			}
-			PutChip(startNode->state, inputstr, HUMANCLR);
 			startNode->move = ROBOTCLR;
 			if(HUMANCLR == 1)
 				startNode->white += 1;
 			else startNode->black += 1;
-			print_pos(startNode->state);
+			print_pos(startNode->get_state());
 		}
 		Node* max_n = nullptr;
 		int depth = 0;
@@ -434,12 +446,13 @@ void StartGame() {
 		{
 			Node* m = max_n;
 			max_n = max_n->prevNode;
-			delete[] m->state;
+			delete[] m->get_state();
 			delete m;
 		}
 		startNode = max_n;
 		startNode->prevNode = nullptr;
-		print_pos(startNode->state);
+		startNode->move = HUMANCLR;
+		print_pos(startNode->get_state());
 	}
 }
 void Part1(Node* node) {

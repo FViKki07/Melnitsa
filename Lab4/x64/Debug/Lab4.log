@@ -1,15 +1,13 @@
 ﻿  Game.cpp
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(36,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(82,11): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(150,21): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(155,22): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(158,33): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(244,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(266,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(271,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(330,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(352,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\4 course\ИС\Melnitsa\Lab4\Game.cpp(357,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-  Lab4.h
-  Создание кода...
-  Lab4.vcxproj -> D:\Вика\4 course\ИС\Melnitsa\x64\Debug\Lab4.exe
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(62,11): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(130,66): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(135,38): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(138,33): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(171,22): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(232,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(261,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(268,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(332,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(358,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(366,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+  Lab4.vcxproj -> D:\Вика\Универ\4\ИС\Melnitsa\x64\Debug\Lab4.exe
