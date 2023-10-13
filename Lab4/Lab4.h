@@ -11,11 +11,12 @@
 #include <sstream>
 using namespace std;
 
-const int ROBOTCLR =1;
-const int HUMANCLR = 2;
+const int ROBOTCLR = 2;
+const int HUMANCLR = 1;
 
 bool FindMill(int* state, int color, vector<vector<int>>& pos);
 
+//добавить для каждого ребенка его стоимость, возможно стек сделать  
 struct Node {
 private:
 	int* state;
@@ -29,75 +30,40 @@ public:
 	vector<vector<int>> rMills = {};
 	vector<vector<int>> oppMills = {};
 	Node* prevNode;
+	vector<Node*> child_fun = {};
+	int steal_w = 0;
+	int steal_b = 0;
 
 	Node(int* s, int wh, int bl, int move, int p, int f, Node* n = nullptr) : state(s), white(wh), black(bl), move(move), prevNode(n) {
 		value = 0;
 		phase = p;
 		fun = f;
 
-		vector<vector<int>> v = {};
-		/*if (FindMill(state, move, v)) {
-			for (int i = 0; i < v.size(); i++) {
-				BetweenMills2(v);
-				if (move == HUMANCLR)
-					oppMills.push_back(v[i]);
-				else rMills.push_back(v[i]);
-			}
-		}*/
 		if (n != nullptr) {
 			if (n->rMills.size() != 0) rMills = n->rMills;
 			if(n->oppMills.size() != 0) oppMills = n->oppMills;
 		}
 	}
 
+	void new_Steal_w(int s) {	steal_w = s;}
+	void new_Steal_b(int s) { steal_b = s; }
+
 	void new_state(int* new_s) {
 		state = new_s;
-		/*vector<vector<int>> v = {};
-		if (FindMill(state, move, v)) {
-			BetweenMills2( v);
-			for (int i = 0; i < v.size(); i++) {
-				if (move == HUMANCLR)
-					oppMills.push_back(v[i]);
-				else rMills.push_back(v[i]);
-			}
-		}*/
 	}
-
 
 	void new_state(int new_pos, int clr = -1) {
 		if(clr == -1)
 			state[new_pos] = move;
 		else state[new_pos] = clr;
-		/*vector<vector<int>> v = {};
-		if (FindMill(state, move, v)) {
-			BetweenMills2(v);
-			for (int i = 0; i < v.size(); i++) {
-				if (move == HUMANCLR)
-					oppMills.push_back(v[i]);
-				else rMills.push_back(v[i]);
-			}
-		}*/
 	}
+
 	int* get_state() { return state; }
 
-private:
-	void BetweenMills2(vector<vector<int>>& v)
-	{
-		for (int i = 0; i < v.size(); i++) {
-			for (int j = 0; j < rMills.size(); j++) {
-				vector<int> rob =rMills[j];
-				if (v[i][0] == rob[0] && v[i][1] == rob[1] && v[i][2] == rob[2])
-					v.erase(v.begin() + i);
-				else rMills.push_back(v[i]);
-			}
-			if (rMills.size() == 0) {
-				rMills.push_back(v[i]);
-			}
-		}
-
-	}
-
 };
+
+
+bool compareByField(const Node* obj1, const Node* obj2);
 
 bool BetweenMills(Node* node, vector<vector<int>>& v);
 
@@ -116,7 +82,7 @@ const map<int, vector<int>> NEIGHBORS = { {0, { 1,9}}, {1, {0,2, 4}}, {2, {1, 14
 const int MILLS[16][3] = {{0,1,2}, {3,4,5}, {6,7,8}, {9,10,11}, {12,13,14}, {15,16,17}, {18,19,20}, {21,22,23},
 	{0,9,21}, {3,10,18}, {6,11,15}, {1,4,7},{16,19,22}, {8,12,17},{5,13,20},{2,14,23} };
 
-const int MAX_DEPTH = 2;
+const int MAX_DEPTH = 3;
 
 void print_pos(int* mas);
 
