@@ -9,10 +9,11 @@
 #include <vector>
 #include <unordered_set>
 #include <sstream>
+#include <ctime>
 using namespace std;
 
-const int ROBOTCLR = 2;
-const int HUMANCLR = 1;
+const int ROBOTCLR = 1;
+const int HUMANCLR = 2;
 
 bool FindMill(int* state, int color, vector<vector<int>>& pos);
 
@@ -21,7 +22,7 @@ struct Node {
 private:
 	int* state;
 public:	
-	int value;
+	//int value;
 	int white;
 	int black;
 	int move;// 1 - Ходят белые, 2 - черные bool?
@@ -35,7 +36,7 @@ public:
 	int steal_b = 0;
 
 	Node(int* s, int wh, int bl, int move, int p, int f, Node* n = nullptr) : state(s), white(wh), black(bl), move(move), prevNode(n) {
-		value = 0;
+		//value = 0;
 		phase = p;
 		fun = f;
 
@@ -44,7 +45,19 @@ public:
 			if(n->oppMills.size() != 0) oppMills = n->oppMills;
 		}
 	}
-
+	void NewNode(Node* node) {
+		state = node->state;
+		white = node->white;
+		black = node->black;
+		move = HUMANCLR;
+		phase = node->phase;
+		rMills = node->rMills;
+		oppMills = node->oppMills;
+		prevNode = node->prevNode;
+		steal_w = node->steal_w;
+		steal_b = node->steal_b;
+		fun = 0;
+	}
 	void new_Steal_w(int s) {	steal_w = s;}
 	void new_Steal_b(int s) { steal_b = s; }
 
@@ -60,6 +73,10 @@ public:
 
 	int* get_state() { return state; }
 
+	~Node(){
+		if (state)
+		delete[] state;
+	}
 };
 
 
@@ -82,7 +99,7 @@ const map<int, vector<int>> NEIGHBORS = { {0, { 1,9}}, {1, {0,2, 4}}, {2, {1, 14
 const int MILLS[16][3] = {{0,1,2}, {3,4,5}, {6,7,8}, {9,10,11}, {12,13,14}, {15,16,17}, {18,19,20}, {21,22,23},
 	{0,9,21}, {3,10,18}, {6,11,15}, {1,4,7},{16,19,22}, {8,12,17},{5,13,20},{2,14,23} };
 
-const int MAX_DEPTH = 3;
+const int MAX_DEPTH = 4;
 
 void print_pos(int* mas);
 
@@ -94,6 +111,10 @@ bool AbilityMove(int* state, int color, vector<int>& blockChip);
 
 bool FindMill(int* state, int color, vector<vector<int>>& pos );
 
-int FindTwoChip(int* state, int color);
-
+int FindTwoChip(Node* node, int clr);
+int Heuristics1(Node* node);
+Node* Part23(Node* node, int& depth, int alpha, int beta);
 void StartGame();
+
+Node* LookNewPos(Node* node, int& depth, int alpha, int beta);
+Node* Part2(Node* node, int& depth, int alpha, int beta);

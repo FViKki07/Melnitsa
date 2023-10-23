@@ -1,4 +1,5 @@
-#include "Lab4.h"
+
+#include "Game.h"
 
 int main() {
 
