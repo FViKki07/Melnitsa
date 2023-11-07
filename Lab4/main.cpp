@@ -1,7 +1,7 @@
-
 #include "Game.h"
-
-int main() {
+int ROBOTCLR;
+int HUMANCLR;
+int main(int argc, char* argv[]) {
 
 	setlocale(LC_ALL, "Russian");
 	
@@ -27,13 +27,23 @@ int main() {
 	vector<vector<int>> st;
 	int p = -1;
 	cout << FindMill(arr2, 1, st)<<endl;
+	*/
+	//int arr3[24] = { 1,1,1,1,1,1,2,1,0,1,2,1,0,2,2,2,2,2,2,2,2,1,2,0 };
+	//print_pos(arr3);
+	//Node* node2 = new Node(arr3, 5, 6, 1, 0, 0);
 
-	int arr3[24] = { 1,1,1,2,2,1,2,0,0,2,2,1,0,2,2,2,0,0,1,2,0,0,0,0 };
-	print_pos(arr3);
-	vector<int> block = {};
-	Node* node2 = new Node(arr3, 5, 6, 1, 0, 0);
-	cout<< AbilityMove(node2->state, node2->move, block);
-	cout << FindTwoChip(arr3,1) <<endl;*/
+	//cout << DoubleMorris(node2, 2) << endl;
 
+	ROBOTCLR = 1;
+	HUMANCLR = 2;
+	if (argv[1][0] == '0') {
+		ROBOTCLR = 1;
+		HUMANCLR = 2;
+	}
+	else {
+		ROBOTCLR = 2;
+		HUMANCLR = 1;
+	}
+	
 	StartGame();
 }

@@ -19,6 +19,8 @@ void FirstPlayer() {
 		cout << "Вы ходите вторыми. Ваши фишки черные (2)\nЧтобы походить выберите позицию от 0 до 24 включительно." << endl;
 	}
 }*/
+//extern int ROBOTCLR;
+//extern int HUMANCLR;
 
 bool compareByField(const Node* obj1, const Node* obj2) {
 	return obj1->fun < obj2->fun;
@@ -32,11 +34,9 @@ bool PutChip(Node* node, string pos, int color) {
 		vv.push_back(word);
 	}
 	if(vv.size() == 0) return false;
-	if (vv[0]._Equal("-r") && node->prevNode != nullptr && node->prevNode->prevNode != nullptr) {
-		node = node->prevNode->prevNode;
-		return true;
-	}
-	int* state = node->get_state();
+	int* state = new int[24];
+	copy(node->get_state(), node->get_state() + 24, state);
+	node->new_state(state);
 	//print_pos(state);
 	if (CONVERT.count(vv[0]) == 0 || state[CONVERT.at(vv[0])] != 0) {
 		std::cout << "Неправильное значение для вашей фишки " << endl;
@@ -91,12 +91,11 @@ bool MoveChip(Node* node, string pos, int color) {
 	while (ss >> word) {
 		vv.push_back(word);
 	}
-	if (vv.size()>0 && vv[0]._Equal("-r") && node->prevNode != nullptr && node->prevNode->prevNode != nullptr) {
-		node = node->prevNode->prevNode;
-		return true;
-	}
+
 	if (vv.size() < 2 ) return false;
-	int* state = node->get_state();
+	int* state = new int[24];
+	copy(node->get_state(), node->get_state() + 24, state);
+	node->new_state(state);
 	//print_pos(state);
 	if (CONVERT.count(vv[0]) == 0 || state[CONVERT.at(vv[0])] != HUMANCLR ||
 		CONVERT.count(vv[1]) == 0 || state[CONVERT.at(vv[1])] != 0) {
@@ -217,6 +216,35 @@ int FindTwoChip(Node* node, int clr) {
 	return count;
 }
 
+int DoubleMorris(Node* node, int clr) {
+	int count = 0;
+	auto state = node->get_state();
+	for (int i = 0; i < 15; i++) {
+		for (int j = i + 1; j < 16; j++) {
+			for (int k = 0; k < 3; k++) {
+				if (MILLS[i][k] == MILLS[j][k] && state[MILLS[j][k]] == clr) {
+					if (state[MILLS[i][0]] == state[MILLS[i][1]] == state[MILLS[i][2]] == clr &&
+						state[MILLS[j][0]] == state[MILLS[j][1]] == state[MILLS[j][2]] == clr) {
+						count++;
+						break;
+					}
+					
+				}
+			}
+		}
+	}
+	return count;
+}
+
+int CountNeigh(Node* node, int clr) {
+	int* state = node->get_state();
+	int c = 0;
+	for (int i = 0; i < NEIGHBORS.size(); i++) {
+		if (state[i] == clr && NEIGHBORS.at(i).size() == 4) 
+			c++;
+	}
+	return c;
+}
 
 bool FindMill(int* state,int color,vector<vector<int>>& pos) {
 	for (auto it : MILLS) {
@@ -276,6 +304,8 @@ int Heuristics1(Node* node) {
 
 	}
 
+	int countNeigh = CountNeigh(node, ROBOTCLR) - CountNeigh(node, HUMANCLR);
+
 	//2
 	int NumberOfMorris = node->rMills.size() - node->oppMills.size();
 
@@ -297,7 +327,10 @@ int Heuristics1(Node* node) {
 	int TwoChip = FindTwoChip(node, ROBOTCLR) ;
 	TwoChip -= FindTwoChip(node, HUMANCLR);// : TwoChip -= FindTwoChip(node->state, 1);
 
-	//8
+	//7
+	int DoubMorris = DoubleMorris(node, ROBOTCLR) - DoubleMorris(node, HUMANCLR);
+	
+		//8
 	int WinConfiguration = 0;
 	if (End_of_Game(node) && node->move == ROBOTCLR)
 		WinConfiguration = -1;
@@ -305,11 +338,10 @@ int Heuristics1(Node* node) {
 		WinConfiguration = 1;
 
 
-	//(node->move == 2) ? node->move = 1 : node->move = 2;
 	if(node->phase == 1)
-		return 18 * clossedMorris + 26 * NumberOfMorris + NumberofBlocked + 9 * NumberChip + 10 * TwoChip;
+		return 18 * clossedMorris + 26 * NumberOfMorris + NumberofBlocked + 9 * NumberChip + 10 * TwoChip + 8 * countNeigh;
 	if (node->phase == 2)
-		return 14 * clossedMorris + 43 * NumberOfMorris + 10 * NumberofBlocked + 11 * NumberChip + 1086 * WinConfiguration;
+		return 14 * clossedMorris + 43 * NumberOfMorris + 10 * NumberofBlocked + 11 * NumberChip + 8 * DoubMorris + 1086 * WinConfiguration;
 	else {
 		return 16 * clossedMorris + 10 * TwoChip + 1190 * WinConfiguration;
 	}
@@ -382,10 +414,85 @@ string GetKey(int val) {
 
 }
 
+bool CheckReturn(string pos, Node*& curNode) {
+	stringstream ss(pos);
+	string word;
+	vector<string> vv = {};
+	while (ss >> word) {
+		vv.push_back(word);
+	}
+	if (vv[0]._Equal("u1") && curNode->prevNode != nullptr && curNode->prevNode->prevNode != nullptr) {
+		curNode = curNode->prevNode->prevNode;
+		return true;
+	}
+	return false;
+}
+
+
+string Move1(Node* node) {
+	auto state = node->prevNode->get_state();
+	auto new_state = node->get_state();
+	int h1 = 25;
+	int h2 = 25;
+	int r = 25;
+	for (int i = 0; i < 24; i++) {
+		if (state[i] != new_state[i]) {
+			if (new_state[i] == ROBOTCLR)
+				r = i;
+			else if (state[i] == HUMANCLR && new_state[i] == 0) {
+				if (h1 == 25)
+					h1 = i;
+				else h2 = i;
+			}
+		}
+	}
+	if(h1 == 25)
+		return CONVERTR.at(r) + " " + to_string(ROBOTCLR-1);
+	else {
+		if(h2 == 25)
+			return CONVERTR.at(r) + " " + CONVERTR.at(h1) + " "  + to_string(ROBOTCLR-1);
+		else return CONVERTR.at(r) + " " + CONVERTR.at(h1) + " " + CONVERTR.at(h2) + " " + to_string(ROBOTCLR-1);
+	}
+}
+
+string Move2(Node* node) {
+	auto state = node->prevNode->get_state();
+	auto new_state = node->get_state();
+	int h1 = 25;
+	int h2 = 25;
+	int m1 = 25;
+	int m2 = 25;
+	for (int i = 0; i < 24; i++) {
+		if (new_state[i] == ROBOTCLR && state[i] == 0) {
+			m2 = i;
+		}
+		else {
+			if (new_state[i] == 0 && state[i] == ROBOTCLR)
+				m1 = i;
+			else {
+				if (new_state[i] == 0 && state[i] == HUMANCLR) {
+					if (h1 == 25)
+						h1 = i;
+					else h2 = i;
+				}
+			}
+		}
+
+	}
+	if (h1 == 25)
+		return CONVERTR.at(m1) + " " + CONVERTR.at(m2) + " " + to_string(ROBOTCLR - 1);
+	else {
+		if (h2 == 25)
+			return CONVERTR.at(m1) + " " + CONVERTR.at(m2) + " " + CONVERTR.at(h1) + " " + to_string(ROBOTCLR - 1);
+		else return CONVERTR.at(m1) + " " + CONVERTR.at(m2) + " " + CONVERTR.at(h1) + " " + CONVERTR.at(h2) + " " + to_string(ROBOTCLR - 1);
+	}
+}
+
 void StartGame() {
+
 	const int n = 24;
 	int arr[n];
-	cout << "\nПоле до начала игры\n0-это пустые ячейки\n1 - это белые фишки\n2 - это черные фишки" << endl;
+	cout << "\nThe field before the start of the game\n0 is empty cells\n1 - these are white chips\n2 - these are black chips" << endl;
 	std::generate(arr, arr + n, []() { return 0; });
 	print_pos(arr);
 
@@ -407,23 +514,29 @@ void StartGame() {
 	while((startNode->black + startNode->steal_b <9 || startNode->white + startNode->steal_w < 9 ) ){//erase fasle!!!
 
 
-		cout << "Белых фишек осталось " << 9 - startNode->white - startNode->steal_w << endl;
-		cout << "Черных фишек осталось " << 9 - startNode->black - startNode->steal_b << endl;
-		cout << "Ваши мельницы:" << endl;
+		cout << "There are no white chips left " << 9 - startNode->white - startNode->steal_w << endl;
+		cout << "There are no black chips left " << 9 - startNode->black - startNode->steal_b << endl;
+		cout << "Your mills:" << endl;
 		for (auto m : startNode->oppMills)
 			cout << GetKey(m[0]) << " " << GetKey(m[1]) << " " << GetKey(m[2]) << endl;
-		cout << "Бота мельницы:" << endl;
+		cout << "Bot mills:" << endl;
 		for (auto m : startNode->rMills)
 			cout << GetKey(m[0]) << " " << GetKey(m[1]) << " " << GetKey(m[2]) << endl;
 
 		if ((HUMANCLR == 1 || startNode->black > 0 || startNode->white > 0) && human) {
-			std::cout << "Введите поля: ";
+			std::cout << "Enter the fields: ";
 			char s[8];
 			cin.getline(s, 8);
+			if (CheckReturn(s, startNode)) {
+				print_pos(startNode->get_state());
+				continue;
+			}
 			auto new_node = new Node(arr, 0, 0, 1, 1, 0);
 			new_node->NewNode(startNode);
+			new_node->move = HUMANCLR;
+
 			while (!PutChip(new_node, s, HUMANCLR)) {
-				std::cout << "Введите поля: ";
+				std::cout << "Enter the fields: ";
 				cin.getline(s, 8);
 			}
 			new_node->prevNode = startNode;
@@ -462,6 +575,7 @@ void StartGame() {
 			startNode->prevNode = nullptr;*/
 			startNode->move = HUMANCLR;
 			startNode->child_fun.clear();
+			cerr << Move1(startNode)<<endl;
 			print_pos(startNode->get_state());
 		}
 		human = (HUMANCLR == 1) ? startNode->white + startNode->steal_w < 9 : startNode->black + startNode->steal_b < 9;
@@ -470,14 +584,18 @@ void StartGame() {
 
 
 
-	std::cout << "Переместить свою фишку на соседнее свободное место.\nВведите сначала поле фишки, а потом поле,куда хотите ее переместить ( в конце поле для удаления, если потребуется)" << endl;
+	std::cout << "Move your chip to the adjacent free space.\nfirst enter the field of the chip, and then the field where you want to move it (at the end of the field to delete, if necessary)" << endl;
+	int countMove = 0;
 	while (startNode->white > 2  && startNode->black > 2) {
-		cout << "Белых фишек осталось " << startNode->white<< endl;
-		cout << "Черных фишек осталось " <<  startNode->black << endl;
-		cout << "Ваши мельницы:" << endl;
+		if (countMove >= 200)
+			exit(4);
+
+		cout << "There are no white chips left " << startNode->white<< endl;
+		cout << "There are no black chips left " <<  startNode->black << endl;
+		cout << "Your mills:" << endl;
 		for (auto m : startNode->oppMills)
 			cout << GetKey(m[0]) << " " << GetKey(m[1]) << " " << GetKey(m[2]) << endl;
-		cout << "Бота мельницы:" << endl;
+		cout << "Bot mills:" << endl;
 		for (auto m : startNode->rMills)
 			cout << GetKey(m[0]) << " " << GetKey(m[1]) << " " << GetKey(m[2]) << endl;
 		human = (HUMANCLR == 1) ? startNode->white == 3 : startNode->black == 3;
@@ -486,18 +604,28 @@ void StartGame() {
 			if (End_of_Game(startNode)) 
 				break;
 
-			if (human) {
-				startNode->phase = 3;
-				std::cout << "Переместить свою фишку на ЛЮБОЕ свободное место.\nВведите сначала поле фишки, а потом поле,куда хотите ее переместить ( в конце поле для удаления, если потребуется)" << endl;
-			}
-			else startNode->phase = 2;
-			std::cout << "Введите поля: ";
+			std::cout << "Enter the fields: ";
 			char s[12];
 			cin.getline(s, 12);
-			while (!MoveChip(startNode, s, HUMANCLR)) {
-				std::cout << "Введите поля: ";
+			if (CheckReturn(s, startNode)) {
+				print_pos(startNode->get_state());
+				continue;
+			}
+
+			auto new_node = new Node(arr, 0, 0, 1, 1, 0);
+			new_node->NewNode(startNode);
+			new_node->move = HUMANCLR;
+			if (human) {
+				new_node->phase = 3;
+				std::cout << "Move your chip to ANY available place.\nfirst enter the field of the chip, and then the field where you want to move it (at the end of the field to delete, if necessary" << endl;
+			}
+			else new_node->phase = 2;
+			while (!MoveChip(new_node, s, HUMANCLR)) {
+				std::cout << "Enter the fields: ";
 				cin.getline(s, 12);
 			}
+			new_node->prevNode = startNode;
+			startNode = new_node;
 			startNode->move = ROBOTCLR;
 			print_pos(startNode->get_state());
 		}
@@ -509,7 +637,7 @@ void StartGame() {
 				break;
 			if (robot) {
 				startNode->phase = 3;
-				std::cout << "Теперь бот может перемещать свои фишки куда угодно" << endl;
+				std::cout << "Now the bot can move its chips anywhere" << endl;
 			}
 			else startNode->phase = 2;
 			Node* max_n = Part23(startNode, depth, alpha, beta);
@@ -534,10 +662,16 @@ void StartGame() {
 			//startNode->prevNode = nullptr;
 			startNode->move = HUMANCLR;
 			startNode->child_fun.clear();
+			cerr << Move2(startNode) << endl;
 			print_pos(startNode->get_state());
 		}
+		countMove++;
 	}
-	if (End_of_Game(startNode) && startNode->move == ROBOTCLR ) 
-		cout << "Вы выиграли!" << endl;
-	else cout << "Вы проиграли!" << endl;
+	if (End_of_Game(startNode) && startNode->move == ROBOTCLR) {
+		//cout << "Вы выиграли!" << endl;
+		exit(3);
+	}
+	else { exit(0);
+	//cout << "Вы проиграли!" << endl; 
+	}
 }

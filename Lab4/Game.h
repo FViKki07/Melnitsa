@@ -10,13 +10,16 @@
 #include <unordered_set>
 #include <sstream>
 #include <ctime>
+
 using namespace std;
 
-const int ROBOTCLR = 1;
-const int HUMANCLR = 2;
+extern int ROBOTCLR;
+extern int HUMANCLR;
 
 bool FindMill(int* state, int color, vector<vector<int>>& pos);
 
+//int ROBOTCLR;
+//int HUMANCLR;
 //добавить для каждого ребенка его стоимость, возможно стек сделать  
 struct Node {
 private:
@@ -49,7 +52,7 @@ public:
 		state = node->state;
 		white = node->white;
 		black = node->black;
-		move = HUMANCLR;
+		//move = HUMANCLR;
 		phase = node->phase;
 		rMills = node->rMills;
 		oppMills = node->oppMills;
@@ -89,6 +92,10 @@ const map<string, int> CONVERT = { {"a7", 0},{"d7", 1}, {"g7", 2}, {"b6", 3}, {"
 	{"c5", 6}, {"d5", 7}, {"e5", 8}, {"a4", 9}, {"b4", 10}, {"c4", 11}, {"e4", 12}, {"f4", 13}, {"g4", 14},
 	{"c3", 15}, {"d3", 16},{"e3", 17}, {"b2", 18}, {"d2", 19}, {"f2", 20}, {"a1", 21},{"d1", 22},{"g1", 23} };
 
+const map<int, string> CONVERTR = { {0,"a7"},{1,"d7"}, {2,"g7"}, {3,"b6"}, {4,"d6"}, {5,"f6"},
+	{6, "c5"}, {7,"d5"}, {8,"e5"}, {9,"a4"}, {10, "b4"}, {11, "c4"}, {12, "e4"}, {13, "f4"}, {14, "g4"},
+	{15, "c3"}, {16, "d3"},{17, "e3"}, {18 ,"b2"}, {19, "d2"}, {20, "f2"}, {21, "a1"},{22, "d1"},{23, "g1"} };
+
 void print_empty(int* mas);
 
 const map<int, vector<int>> NEIGHBORS = { {0, { 1,9}}, {1, {0,2, 4}}, {2, {1, 14}} , {3, {4, 10}}, {4, {1,3,5,7}}, {5, {4,13}},
@@ -99,7 +106,7 @@ const map<int, vector<int>> NEIGHBORS = { {0, { 1,9}}, {1, {0,2, 4}}, {2, {1, 14
 const int MILLS[16][3] = { {0,1,2}, {3,4,5}, {6,7,8}, {9,10,11}, {12,13,14}, {15,16,17}, {18,19,20}, {21,22,23},
 	{0,9,21}, {3,10,18}, {6,11,15}, {1,4,7},{16,19,22}, {8,12,17},{5,13,20},{2,14,23} };
 
-const int MAX_DEPTH = 4;
+const int MAX_DEPTH = 5;
 
 void print_pos(int* mas);
 
@@ -110,7 +117,7 @@ bool PutChip(Node* node, string pos, int color);
 bool AbilityMove(int* state, int color, vector<int>& blockChip);
 
 bool FindMill(int* state, int color, vector<vector<int>>& pos);
-
+int DoubleMorris(Node* node, int clr);
 int FindTwoChip(Node* node, int clr);
 int Heuristics1(Node* node);
 Node* Part23(Node* node, int& depth, int alpha, int beta);

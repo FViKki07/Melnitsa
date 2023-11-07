@@ -2,8 +2,8 @@
 
 //for phase1
 
-int WHITE = 9;
-int BLACK = 9;
+//extern int ROBOTCLR;
+//extern int HUMANCLR;
 Node* LookNewPos(Node* node, int& depth, int alpha, int beta) {
 	if ( depth >= MAX_DEPTH || (node->white + node->steal_w >= 9 && node->black + node->steal_b >= 9)) {
 		int f = Heuristics1(node);

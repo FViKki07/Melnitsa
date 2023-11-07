@@ -1,39 +1,39 @@
 ﻿  Game.cpp
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(169,11): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(272,66): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(277,38): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(280,33): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(319,22): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(440,24): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Game.cpp(513,24): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  Phase.cpp
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(45,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(81,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(88,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(169,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(204,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(212,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(290,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(317,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(353,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(360,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(418,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(444,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(482,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(489,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(549,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(575,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(611,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(619,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(677,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(702,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(738,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
-D:\Вика\Универ\4\ИС\Melnitsa\Lab4\Phase.cpp(746,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
-  Print.cpp
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(176,11): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(310,21): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(315,22): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(318,33): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(359,12): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(561,24): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Game.cpp(649,24): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Lab4.h
   main.cpp
+  Phase.cpp
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(47,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(85,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(92,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(182,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(224,16): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(232,23): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(320,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(350,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(390,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(397,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(464,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(491,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(533,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(540,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(606,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(633,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(675,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(683,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(749,15): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(775,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(817,18): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+D:\Вика\4course\ИС\Melnitsa\Lab4\Phase.cpp(825,25): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+  Print.cpp
   Создание кода
-  35 of 719 functions ( 4.9%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+  All 829 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Создание кода завершено
-  Lab4.vcxproj -> D:\Вика\Универ\4\ИС\Melnitsa\x64\Release\Lab4.exe
+  Lab4.vcxproj -> D:\Вика\4course\ИС\Melnitsa\x64\Release\Lab4.exe
